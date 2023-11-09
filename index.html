@@ -3,7 +3,7 @@
   <head>
     <title>Login via Google</title>
     <style>
-      #login-button a {
+      #login_button a {
         background-color: #4285f4;
         border-radius: 2px;
         color: #fff;
@@ -23,14 +23,14 @@
   <body>
     <h1>Basic OAuth example using implicit flow</h1>
 
-    <div id="login-button"></div>
+    <div id="login_button"></div>
 
     <div
-      id="user-info"
+      id="user_info"
       style="display: none"
     >
-      <h2 id="user-name"></h2>
-      <p id="user-image"></p>
+      <h2 id="user_name"></h2>
+      <p id="user_image"></p>
     </div>
 
     <script>
@@ -52,15 +52,13 @@
             scope +
             "&client_id=878587720114-se8qi9eidmnedvme4k59bm58h1q9bffj.apps.googleusercontent.com" +
             `&redirect_uri=${document.location.href}`;
-
-          console.log(document.location.href);
-          const loginButton = document.createElement("button");
+          const loginButton = document.createElement("a");
           const btnText = document.createTextNode("Login via Google");
 
           loginButton.appendChild(btnText);
           loginButton.href = googleAuthUrl;
 
-          document.getElementById("login-button").appendChild(loginButton);
+          document.getElementById("login_button").appendChild(loginButton);
         }
       }
 
@@ -75,13 +73,13 @@
 
         const data = await response.json();
 
-        const userInfo = document.getElementById("user-info");
+        const userInfo = document.getElementById("user_info");
         userInfo.style.display = "block";
 
-        const userName = document.getElementById("user-name");
+        const userName = document.getElementById("user_name");
         userName.innerHTML = `Hello ${data.name}!`;
 
-        const userImage = document.getElementById("user-image");
+        const userImage = document.getElementById("user_image");
         userImage.innerHTML = `<img src="${data.picture}" alt="${data.name} picture" />`;
       }
 
