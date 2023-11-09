@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Login via Google</title>
+    <style>
+      #login-button a {
+        background-color: #4285f4;
+        border-radius: 2px;
+        color: #fff;
+        display: inline-block;
+        font-family: Roboto, Arial, sans-serif;
+        font-size: 14px;
+        height: 36px;
+        line-height: 36px;
+        padding: 0 16px;
+        text-align: center;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Basic OAuth example using implicit flow</h1>
+
+    <div id="login-button"></div>
+
+    <div
+      id="user-info"
+      style="display: none"
+    >
+      <h2 id="user-name"></h2>
+      <p id="user-image"></p>
+    </div>
+
+    <script>
+      const scope = "openid profile email";
+
+      function checkLoginStatus() {
+        const urlParams = new URLSearchParams(
+          window.location.hash.substring(1)
+        );
+        const accessToken = urlParams.get("access_token");
+
+        if (accessToken) {
+          getUserInfo(accessToken);
+        } else {
+          const googleAuthUrl =
+            "https://accounts.google.com/o/oauth2/v2/auth" +
+            "?response_type=token" +
+            "&scope=" +
+            scope +
+            "&client_id=878587720114-se8qi9eidmnedvme4k59bm58h1q9bffj.apps.googleusercontent.com" +
+            `&redirect_uri=${document.location.href}`;
+
+          console.log(document.location.href);
+          const loginButton = document.createElement("button");
+          const btnText = document.createTextNode("Login via Google");
+
+          loginButton.appendChild(btnText);
+          loginButton.href = googleAuthUrl;
+
+          document.getElementById("login-button").appendChild(loginButton);
+        }
+      }
+
+      async function getUserInfo(accessToken) {
+        const url = "https://openidconnect.googleapis.com/v1/userinfo";
+
+        const response = await fetch(url, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+        const data = await response.json();
+
+        const userInfo = document.getElementById("user-info");
+        userInfo.style.display = "block";
+
+        const userName = document.getElementById("user-name");
+        userName.innerHTML = `Hello ${data.name}!`;
+
+        const userImage = document.getElementById("user-image");
+        userImage.innerHTML = `<img src="${data.picture}" alt="${data.name} picture" />`;
+      }
+
+      window.onload = checkLoginStatus;
+    </script>
+  </body>
+</html>
